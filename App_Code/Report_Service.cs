@@ -45,17 +45,10 @@ public class Report_Service : IReport_Service
     ResponseFormat = WebMessageFormat.Json)]
     public string GetConsultaErrores()
     {
-        obj_dt = obj_consultas_procesos.ftn_consulta_errores_reportes();
+       obj_dt = obj_consultas_procesos.ftn_consulta_errores_reportes();
         if (obj_dt != null)
         {
-            //if (obj_func_genericas.ftn_retorna_serializable(obj_dt) != "")
-            //{
-                return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
-            //}
-            //else
-            //{
-            //    return "Sin Información";
-            //}
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
         }
         else
         {

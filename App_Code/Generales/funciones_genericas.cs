@@ -17,6 +17,7 @@ public class funciones_genericas
 
     public string ftn_retorna_serializable(DataTable obj_dt)
     {
+
         Dictionary<string, object> row;
         foreach (DataRow dr in obj_dt.Rows)
         {
@@ -27,7 +28,15 @@ public class funciones_genericas
             }
             rows.Add(row);
         }
+
+
         return serializer.Serialize(rows);
+    }
+
+
+    public int ftn_Weekday(DateTime dt, DayOfWeek startOfWeek)
+    {
+        return (dt.DayOfWeek - startOfWeek + 7) % 7;
     }
 
 
