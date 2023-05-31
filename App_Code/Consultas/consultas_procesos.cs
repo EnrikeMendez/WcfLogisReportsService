@@ -30,5 +30,25 @@ public class consultas_procesos
 
         return dt;
     }
+    public DataTable ftn_consulta_monitoreo_reportes()
+    {
+        SQL = "select  cron.id_rapport as id_cron, TO_char(cron.last_execution,'DD/MON/YYYY HH24:MI') as hora_creacion, rep_detalle.name,  \n";
+        SQL = SQL + " rep.id_rep || ' - ' ||rep.name as tipo_reporte, \n";
+        SQL = SQL + " (cron.MOIS || cron.JOUR_SEMAINE || cron.HEURES || cron.MINUTES || cron.JOURS) as programacion, \n";
+        SQL = SQL + "  cron.priorite, cron.test, cron.in_progress, rep_detalle.id_cron, \n";
+        SQL = SQL + "  (select error.log from rep_chron_error error, rep_detalle_reporte reporte where trunc(error.date_created) = trunc(sysdate) and error.id_reporte = reporte.id_cron and error.id_reporte = rep_detalle.id_cron and rownum = 1)as errores \n";
+        SQL = SQL + "  , cron.id_chron, reprocesos.nombre_proceso ,reprocesos.status\n";
+        SQL = SQL + "  from REP_CHRON cron \n";
+        SQL = SQL + "  JOIN rep_detalle_reporte rep_detalle on cron.id_rapport = rep_detalle.id_cron   \n";
+        SQL = SQL + "  JOIN rep_reporte rep on rep.ID_REP = rep_detalle.id_rep  \n";
+        SQL = SQL + "  LEFT OUTER JOIN rep_reprocesos_reporte reprocesos on reprocesos.id_cron = cron.id_rapport  \n";
+        SQL = SQL + "  where cron.active <> 0 \n";
+        SQL = SQL + "  and trunc(cron.last_execution) = trunc(sysdate) \n";
+        SQL = SQL + "  order by  cron.in_progress desc, hora_creacion desc ";
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+
+        return dt;
+    }
 
 }
