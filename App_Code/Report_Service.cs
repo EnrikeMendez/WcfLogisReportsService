@@ -55,10 +55,29 @@ public class Report_Service : IReport_Service
             return "Sin Información";
         }
     }
-
+    [WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
     public string GetMonitoreoRep()
     {
         obj_dt = obj_consultas_procesos.ftn_consulta_monitoreo_reportes();
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
+
+    
+    [WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetSql(String sql)
+    {
+        obj_dt = obj_consultas_procesos.ftn_consulta_gen(sql);
         if (obj_dt != null)
         {
             return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();

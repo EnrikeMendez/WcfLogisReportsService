@@ -12,15 +12,15 @@ public class consultas_procesos
     DataTable dt = new DataTable();
     DB conexion = new DB();
     string SQL;
-	
-	//Variables procesos:
+
+    //Variables procesos:
     int backDays = 1;
     DateTime obj_date_time = DateTime.Now;
     funciones_genericas obj_func_genericas = new funciones_genericas();
 
     public DataTable ftn_consulta_errores_reportes()
     {
-          if (obj_func_genericas.ftn_Weekday(obj_date_time, DayOfWeek.Friday) == 2)
+        if (obj_func_genericas.ftn_Weekday(obj_date_time, DayOfWeek.Friday) == 2)
         {
             backDays = 3;
         }
@@ -42,10 +42,14 @@ public class consultas_procesos
     }
     public DataTable ftn_consulta_monitoreo_reportes()
     {
+        if (obj_func_genericas.ftn_Weekday(obj_date_time, DayOfWeek.Friday) == 2)
+        {
+            backDays = 3;
+        }
         SQL = "select  cron.id_rapport as id_cron, TO_char(cron.last_execution,'DD/MON/YYYY HH24:MI') as hora_creacion, rep_detalle.name,  \n";
         SQL = SQL + " rep.id_rep || ' - ' ||rep.name as tipo_reporte, \n";
         SQL = SQL + " (cron.MOIS || cron.JOUR_SEMAINE || cron.HEURES || cron.MINUTES || cron.JOURS) as programacion, \n";
-        SQL = SQL + "  cron.priorite, cron.test, cron.in_progress, rep_detalle.id_cron, \n";
+        SQL = SQL + "  cron.priorite, cron.test, cron.in_progress, rep_detalle.id_cron id_cron_det, \n";
         SQL = SQL + "  (select error.log from rep_chron_error error, rep_detalle_reporte reporte where trunc(error.date_created) = trunc(sysdate) and error.id_reporte = reporte.id_cron and error.id_reporte = rep_detalle.id_cron and rownum = 1)as errores \n";
         SQL = SQL + "  , cron.id_chron, reprocesos.nombre_proceso ,reprocesos.status\n";
         SQL = SQL + "  from REP_CHRON cron \n";
@@ -53,12 +57,16 @@ public class consultas_procesos
         SQL = SQL + "  JOIN rep_reporte rep on rep.ID_REP = rep_detalle.id_rep  \n";
         SQL = SQL + "  LEFT OUTER JOIN rep_reprocesos_reporte reprocesos on reprocesos.id_cron = cron.id_rapport  \n";
         SQL = SQL + "  where cron.active <> 0 \n";
-        SQL = SQL + "  and trunc(cron.last_execution) = trunc(sysdate) \n";
+        SQL = SQL + "  AND cron.last_execution	between sysdate - " + backDays + " and sysdate \n";
         SQL = SQL + "  order by  cron.in_progress desc, hora_creacion desc ";
         dt = conexion.ObtieneDataTable(SQL);
         SQL = "";
 
         return dt;
     }
-
+    public DataTable ftn_consulta_gen(string SQL)
+    {
+        dt = conexion.ObtieneDataTable(SQL);
+        return dt;
+    }
 }

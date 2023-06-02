@@ -26,5 +26,9 @@ public interface IReport_Service
     [WebInvoke(Method = "GET",
     ResponseFormat = WebMessageFormat.Json)]
     string GetConsultaErrores();
-	
+
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+   ResponseFormat = WebMessageFormat.Json)]
+    string GetSql(string sql);
 }
