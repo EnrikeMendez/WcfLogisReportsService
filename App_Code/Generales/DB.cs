@@ -1,5 +1,6 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
+using System.Configuration;
 using System.Data;
 
 public class DB
@@ -14,21 +15,8 @@ public class DB
 
     private string GetConnectionString()
     {
-        string HOST = string.Empty;
-        string PORT = string.Empty;
-        string DB_NAME = string.Empty;
-        string PASSWORD = string.Empty;
-        string USER_ID = string.Empty;
-        string db_cadena = string.Empty;
-
-        HOST = "192.168.0.4";
-        PORT = "1521";
-        DB_NAME = "Orfeo2";
-        USER_ID = "web_adm";
-        PASSWORD = "va4ncMC3P";
-
-        return string.Format("DATA SOURCE = {0}:{1} / {2}; PASSWORD = {3}; USER ID = {4};",
-                HOST, PORT, DB_NAME, PASSWORD, USER_ID);
+        AppSettingsReader reader = new AppSettingsReader();
+        return reader.GetValue("cnn", typeof(string)).ToString();
     }
     public bool EjecutarQuery(string sql)
     {
