@@ -13,6 +13,7 @@ public class Report_Service : IReport_Service
     consultas_procesos obj_consultas_procesos = new consultas_procesos();
     funciones_genericas obj_func_genericas = new funciones_genericas();
     DataTable obj_dt = new DataTable();
+	Boolean ejecuto_querye;
 
 
 
@@ -87,4 +88,40 @@ public class Report_Service : IReport_Service
             return "Sin Información";
         }
     }
+	
+	
+	[WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetConsultaCambioPrioridad()
+    {
+        obj_dt = obj_consultas_procesos.ftn_consulta_cambio_prioridad();
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
+
+
+    [WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetModificaCambioPrioridad(string id_crons, string prioridad)
+    {
+        ejecuto_querye  = obj_consultas_procesos.ftn_modifica_cambio_prioridad(id_crons, prioridad);
+        if (ejecuto_querye == true)
+        {
+            return "Los procesos: " + id_crons  + " se cambiaron a prioridad: " + prioridad;
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
+	
+	
 }

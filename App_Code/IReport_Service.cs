@@ -31,4 +31,16 @@ public interface IReport_Service
     [WebInvoke(Method = "GET",
    ResponseFormat = WebMessageFormat.Json)]
     string GetSql(string sql);
+	
+	
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetConsultaCambioPrioridad();
+
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetModificaCambioPrioridad(string id_crons, string prioridad);
 }

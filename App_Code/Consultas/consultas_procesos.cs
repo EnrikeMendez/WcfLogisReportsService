@@ -12,6 +12,7 @@ public class consultas_procesos
     DataTable dt = new DataTable();
     DB conexion = new DB();
     string SQL;
+	Boolean ejecuta_querye;
 
     //Variables procesos:
     int backDays = 1;
@@ -69,4 +70,31 @@ public class consultas_procesos
         dt = conexion.ObtieneDataTable(SQL);
         return dt;
     }
+	
+	
+	public DataTable ftn_consulta_cambio_prioridad()
+    {
+        SQL = " select reporte.id_rep, reporte.name as nombre_reporte, chron.priorite, cliente, rep_det.id_cron, rep_det.name as nombre_detalle, TO_char(date_created,'DD/MON/YYYY HH24:MI') as hora_creacion, rep_det.dest_mail, id_chron \n";
+        SQL = SQL + " from rep_detalle_reporte \n";
+        SQL = SQL + " rep_det join REP_CHRON chron on chron.id_rapport = rep_det.id_cron \n";
+        SQL = SQL + " join rep_reporte reporte on reporte.id_rep = rep_det.id_rep \n";
+        SQL = SQL + " where chron.active = 1 and chron.MINUTES is null and chron.HEURES is null and chron.JOURS is null and chron.MOIS is null and chron.JOUR_SEMAINE is null and chron.LAST_EXECUTION is null \n";
+        SQL = SQL + " order by chron.priorite, id_cron desc \n";
+
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+
+        return dt;
+
+    }
+
+
+    public bool ftn_modifica_cambio_prioridad(string id_crons, string prioridad)
+    {
+        SQL = "update rep_chron set priorite = " + prioridad + " where id_chron in (" + id_crons + ")";
+        ejecuta_querye = conexion.EjecutarQuery(SQL);
+        SQL = "";
+        return ejecuta_querye;
+    }
+	
 }
