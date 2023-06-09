@@ -5,6 +5,7 @@ using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 using Newtonsoft.Json;
 
+
 // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "Service1" en el código, en svc y en el archivo de configuración.
 [AspNetCompatibilityRequirements(RequirementsMode
     = AspNetCompatibilityRequirementsMode.Allowed)]
@@ -15,7 +16,7 @@ public class Report_Service : IReport_Service
     DataTable obj_dt = new DataTable();
 	Boolean ejecuto_querye;
 
-
+    System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
     [WebInvoke(Method = "GET",
     BodyStyle = WebMessageBodyStyle.Wrapped,
@@ -83,9 +84,10 @@ public class Report_Service : IReport_Service
         {
             return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
         }
-        else
+        else    
         {
-            return "Sin Información";
+            //return "Sin Información";
+            return string.Format("{0}", " Sin Informacion");
         }
     }
 	
@@ -122,6 +124,15 @@ public class Report_Service : IReport_Service
             return "Sin Información";
         }
     }
-	
-	
+
+   
+    [WebInvoke(Method ="GET",
+        BodyStyle =WebMessageBodyStyle.Wrapped,
+        ResponseFormat =WebMessageFormat.Json)]
+    public string GetMail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero,string status)
+    {
+        //
+      
+        return "";
+    }
 }

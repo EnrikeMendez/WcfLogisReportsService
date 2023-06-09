@@ -49,7 +49,7 @@ public class consultas_procesos
         }
         SQL = "select  cron.id_rapport as id_cron, TO_char(cron.last_execution,'DD/MON/YYYY HH24:MI') as hora_creacion, rep_detalle.name,  \n";
         SQL = SQL + " rep.id_rep || ' - ' ||rep.name as tipo_reporte, \n";
-        SQL = SQL + " (cron.MOIS || cron.JOUR_SEMAINE || cron.HEURES || cron.MINUTES || cron.JOURS) as programacion, \n";
+        SQL = SQL + " NVL((cron.MOIS || cron.JOUR_SEMAINE || cron.HEURES || cron.MINUTES || cron.JOURS),' ') as programacion, \n";
         SQL = SQL + "  cron.priorite, cron.test, cron.in_progress, rep_detalle.id_cron id_cron_det, \n";
         SQL = SQL + "  (select error.log from rep_chron_error error, rep_detalle_reporte reporte where trunc(error.date_created) = trunc(sysdate) and error.id_reporte = reporte.id_cron and error.id_reporte = rep_detalle.id_cron and rownum = 1)as errores \n";
         SQL = SQL + "  , cron.id_chron, reprocesos.nombre_proceso ,reprocesos.status\n";
@@ -96,5 +96,107 @@ public class consultas_procesos
         SQL = "";
         return ejecuta_querye;
     }
-	
+
+    public string ftn_Mail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero,string status)
+    {
+        string mail_ok = string.Empty;
+        string msg = string.Empty;
+        int allOk = string.Empty;
+        SQL = " select MAIL_OK,ID_CRON from rep_detalle_reporte where ID_CRON = '" + Id_Cron + "' ";
+        dt = conexion.ObtieneDataTable(SQL);
+
+       if(dt.Rows.Count > 0)
+        {
+            mail_ok = dt.Rows[0][0].ToString();
+        }
+        if (NumCli != "") {
+            SQL = "select 1 from eclient where cliclef='" + NumCli + "'";
+            dt = conexion.ObtieneDataTable(SQL);
+            if (dt.Rows.Count == 0)
+            {
+                if (NumCli != "")
+                {
+                    return "window.location.href='mail.asp?msg= Este numero de cliente '" + NumCli + "' no existe.";
+                }
+            }
+        }
+        if (id_mail != "")
+        {
+            if (NumCli != "")
+            {
+                SQL = " update rep_mail set nombre= '" + nombre + "', ";
+                SQL = SQL + " mail = '" + correo + "', ";
+                SQL = SQL + " client_num = '" + NumCli + "', ";
+                SQL = SQL + " tercero = '" + Tercero + "', ";
+                SQL = SQL + " status = '" + status + "' ";
+                SQL = SQL + " where id_mail= '" + id_mail + "' ";
+                dt = conexion.ObtieneDataTable(SQL);
+            }
+
+            msg = "Contacto Modificado";
+
+            allOk = 1;
+        }
+        else
+        //'verificacion que el correo es unico en la base
+        {
+            if (NumCli != "")
+            {
+                SQL = " select 1 from rep_mail where mail = '" + correo + "' ";
+                SQL = SQL + " and CLIENT_NUM = '" + NumCli + "'";
+                dt = conexion.ObtieneDataTable(SQL);
+                if (dt.Rows.Count > 0)
+                {
+                    return "window.location.href='mail.asp?msg= Este correo ya existe para este cliente.";
+                }
+            }
+
+            //            'verificar que no se capturen correos de Logis para otro numero de cliente que el 9929
+
+            if (NumCli != ""){
+                //'<JEMV
+                //if (InStr(LCase(Request.Form("correo")), "@logis.com.mx") > 0 and NumCli <> "9929" then
+                //'					Response.Redirect asp_self & "?msg=" & Server.URLEncode ("Favor de crear los correos de Logis con el numero de cliente 9929.")
+                //'				end if
+                //'JEMV>
+
+
+                //                SQL = "insert into rep_mail (ID_MAIL, NOMBRE, MAIL, CLIENT_NUM, TERCERO, STATUS) " & _
+
+                //                        " values  (seq_mail.nextval, '" & _
+
+                //                        SQLEscape(Request.Form("nombre")) & "', '" + correo + _
+
+                //                        "', '" + NumCli + "', null,  1" & _
+
+                //                        " )"
+            }
+            else {
+                //            '<JEMV
+                //'				if InStr(LCase(Request.Form("correo")), "@logis.com.mx") > 0 and Request.Form("cli_num") <> "9929" then
+                //'					Response.Redirect asp_self & "?msg=" & Server.URLEncode ("Favor de crear los correos de Logis con el numero de cliente 9929.")
+                //'				end if
+                //'JEMV>
+
+
+                //                SQL = "insert into rep_mail (ID_MAIL, NOMBRE, MAIL, CLIENT_NUM, TERCERO, STATUS) " & _
+
+                //                        " values  (seq_mail.nextval, '" & _
+
+                //                        SQLEscape(Request.Form("nombre")) & "', '" + correo + _
+
+                //                        "', '" & SQLescape(Request.Form("cli_num")) & "', null,  1" & _
+
+                //                        " )"
+
+            }
+
+
+            //            msg = "Contacto incluido"
+
+            //            allOk = 1
+
+        }
+                return "";
+    }
 }
