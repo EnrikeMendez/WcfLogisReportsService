@@ -124,6 +124,23 @@ public class Report_Service : IReport_Service
             return "Sin Información";
         }
     }
+	
+	[WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetModificaCambioPrioridadDinamica()
+    {
+        ejecuto_querye = obj_consultas_procesos.ftn_modifica_cambio_prioridad_dinamica();
+        if (ejecuto_querye == true)
+        {
+            //return "Los procesos: " + id_crons + " se cambiaron a prioridad: " + prioridad;
+            return "";
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
 
    
     [WebInvoke(Method ="GET",

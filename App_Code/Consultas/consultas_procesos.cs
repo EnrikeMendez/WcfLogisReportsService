@@ -96,6 +96,20 @@ public class consultas_procesos
         SQL = "";
         return ejecuta_querye;
     }
+	
+	 public bool ftn_modifica_cambio_prioridad_dinamica()
+    {
+        SQL = "select reporte.id_rep,  chron.priorite, rep_det.id_cron, chron.id_chron \n";
+        SQL = SQL + " from rep_detalle_reporte rep_det  \n";
+        SQL = SQL + " join REP_CHRON chron on chron.id_rapport = rep_det.id_cron \n";
+        SQL = SQL + " join rep_reporte reporte on reporte.id_rep = rep_det.id_rep  \n";
+        SQL = SQL + " where chron.active = 1  \n";
+        SQL = SQL + " and chron.MINUTES is null and chron.HEURES is null and chron.JOURS is null and chron.MOIS is null and chron.JOUR_SEMAINE is null and chron.LAST_EXECUTION is null  \n";
+        SQL = SQL + " order by chron.priorite, id_cron desc \n";
+        ejecuta_querye = conexion.EjecutarQuery(SQL);
+        SQL = "";
+        return ejecuta_querye;
+    }
 
     public string ftn_Mail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero,string status)
     {
