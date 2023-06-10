@@ -58,5 +58,29 @@ public class funciones_genericas
         return ArrayPrioridadDinamica;
     }
 
+    public List<string> perfil1()
+    {
+        List<string> per1 = new List<string>() {
+            "ALEJANDROLE",
+            "JAVIERD",
+            "ALMALFS"};
+        return per1;
+    }
+
+    public List<string> perfil2()
+    {
+        List<string> per2 = new List<string>() {
+            "YAZMINCC",
+            "EVELINGB",
+            "ELIZABETHBM",
+            "LUISFR",
+            "DULCELO",
+            "ALOURDESC",
+            "ALEXANDRAMM",
+            "LGABRIELAM",
+            "MLOURDESB"
+        };
+        return per2;
+    }
 
 }

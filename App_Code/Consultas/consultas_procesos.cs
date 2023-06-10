@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
+//using System.Linq;
 using System.Web;
 
 /// <summary>
@@ -113,104 +113,496 @@ public class consultas_procesos
 
     public string ftn_Mail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero,string status)
     {
-        string mail_ok = string.Empty;
-        string msg = string.Empty;
-        int allOk = string.Empty;
-        SQL = " select MAIL_OK,ID_CRON from rep_detalle_reporte where ID_CRON = '" + Id_Cron + "' ";
+       // string mail_ok = string.Empty;
+       // string msg = string.Empty;
+       // int allOk = string.Empty;
+       // SQL = " select MAIL_OK,ID_CRON from rep_detalle_reporte where ID_CRON = '" + Id_Cron + "' ";
+       // dt = conexion.ObtieneDataTable(SQL);
+
+       //if(dt.Rows.Count > 0)
+       // {
+       //     mail_ok = dt.Rows[0][0].ToString();
+       // }
+       // if (NumCli != "") {
+       //     SQL = "select 1 from eclient where cliclef='" + NumCli + "'";
+       //     dt = conexion.ObtieneDataTable(SQL);
+       //     if (dt.Rows.Count == 0)
+       //     {
+       //         if (NumCli != "")
+       //         {
+       //             return "window.location.href='mail.asp?msg= Este numero de cliente '" + NumCli + "' no existe.";
+       //         }
+       //     }
+       // }
+       // if (id_mail != "")
+       // {
+       //     if (NumCli != "")
+       //     {
+       //         SQL = " update rep_mail set nombre= '" + nombre + "', ";
+       //         SQL = SQL + " mail = '" + correo + "', ";
+       //         SQL = SQL + " client_num = '" + NumCli + "', ";
+       //         SQL = SQL + " tercero = '" + Tercero + "', ";
+       //         SQL = SQL + " status = '" + status + "' ";
+       //         SQL = SQL + " where id_mail= '" + id_mail + "' ";
+       //         dt = conexion.ObtieneDataTable(SQL);
+       //     }
+
+       //     msg = "Contacto Modificado";
+
+       //     allOk = 1;
+       // }
+       // else
+       // //'verificacion que el correo es unico en la base
+       // {
+       //     if (NumCli != "")
+       //     {
+       //         SQL = " select 1 from rep_mail where mail = '" + correo + "' ";
+       //         SQL = SQL + " and CLIENT_NUM = '" + NumCli + "'";
+       //         dt = conexion.ObtieneDataTable(SQL);
+       //         if (dt.Rows.Count > 0)
+       //         {
+       //             return "window.location.href='mail.asp?msg= Este correo ya existe para este cliente.";
+       //         }
+       //     }
+
+       //     //            'verificar que no se capturen correos de Logis para otro numero de cliente que el 9929
+
+       //     if (NumCli != ""){
+       //         //'<JEMV
+       //         //if (InStr(LCase(Request.Form("correo")), "@logis.com.mx") > 0 and NumCli <> "9929" then
+       //         //'					Response.Redirect asp_self & "?msg=" & Server.URLEncode ("Favor de crear los correos de Logis con el numero de cliente 9929.")
+       //         //'				end if
+       //         //'JEMV>
+
+
+       //         //                SQL = "insert into rep_mail (ID_MAIL, NOMBRE, MAIL, CLIENT_NUM, TERCERO, STATUS) " & _
+
+       //         //                        " values  (seq_mail.nextval, '" & _
+
+       //         //                        SQLEscape(Request.Form("nombre")) & "', '" + correo + _
+
+       //         //                        "', '" + NumCli + "', null,  1" & _
+
+       //         //                        " )"
+       //     }
+       //     else {
+       //         //            '<JEMV
+       //         //'				if InStr(LCase(Request.Form("correo")), "@logis.com.mx") > 0 and Request.Form("cli_num") <> "9929" then
+       //         //'					Response.Redirect asp_self & "?msg=" & Server.URLEncode ("Favor de crear los correos de Logis con el numero de cliente 9929.")
+       //         //'				end if
+       //         //'JEMV>
+
+
+       //         //                SQL = "insert into rep_mail (ID_MAIL, NOMBRE, MAIL, CLIENT_NUM, TERCERO, STATUS) " & _
+
+       //         //                        " values  (seq_mail.nextval, '" & _
+
+       //         //                        SQLEscape(Request.Form("nombre")) & "', '" + correo + _
+
+       //         //                        "', '" & SQLescape(Request.Form("cli_num")) & "', null,  1" & _
+
+       //         //                        " )"
+
+       //     }
+
+
+       //     //            msg = "Contacto incluido"
+
+       //     //            allOk = 1
+
+       // }
+                return "";
+    }
+
+    //08-06-2023 JM
+    //ver_lista
+    public DataTable ftn_verlista_contactos(string usuario, string idCron)
+    {
+        List<string> p1 = new List<string>();
+        List<string> p2 = new List<string>();
+        p1 = obj_func_genericas.perfil1();
+        p2 = obj_func_genericas.perfil1();
+
+
+
+
+        SQL = " select repdet.ID_CRON, repdet.NAME, rep.ID_REP, rep.name, repdet.CLIENTE, InitCap(cli.clinom)" +
+        ", repdet.CARPETA, repdet.FILE_NAME, repdet.LAST_CREATED, repdet.MAIL_OK, repdet.MAIL_ERROR" +
+        ", repdet.FRECUENCIA, tipo.DESCRIPCION, cron.HEURES, cron.MINUTES, cron.JOURS" +
+        ", cron.MOIS, cron.JOUR_SEMAINE, cron.PRIORITE, nvl(rep.subcarpeta,' '), rep.TEMP_MENSAJE_FECHA" +
+        ", rep.TEMP_MENSAJE, rep.NUM_OF_PARAM, decode(repdet.confirmacion, '1', 'checked')" +
+        ", repdet.days_deleted from rep_detalle_reporte repdet  , rep_reporte rep  , rep_chron cron" +
+        ", REP_TIPO_FRECUENCIA tipo, eclient cli where rep.ID_REP = repdet.id_rep and cron.ID_RAPPORT = repdet.id_cron " +
+        "and tipo.ID_TIPO_FREC = repdet.FRECUENCIA and cli.cliclef = repdet.cliente and repdet.ID_CRON = " + idCron;
+        for (int cont = 0; cont < p1.Count; cont++)
+        {
+            if (usuario.Equals(p1[cont]))
+            {
+                SQL = SQL + " and rep.id_rep in (14,173,24) ";
+            }
+        }
+        for (int cont = 0; cont < p2.Count; cont++)
+        {
+            if (usuario.Equals(p2[cont]))
+            {
+                SQL = SQL + " and rep.id_rep = 174 ";
+            }
+        }
         dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
 
-       if(dt.Rows.Count > 0)
+    public DataTable ftn_validar_reprocesos(string idCron)
+    {
+        SQL = string.Format("select nombre_proceso from REP_REPROCESOS_REPORTE where id_cron = '{0}' and status = '{1}'", idCron, 1);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_muestra_tiporeporte(string usuario)
+    {
+        List<string> p1 = new List<string>();
+        List<string> p2 = new List<string>();
+        p1 = obj_func_genericas.perfil1();
+        p2 = obj_func_genericas.perfil1();
+
+        SQL = " select id_rep, name, decode(id_rep, , 'selected')" +
+            " from rep_reporte WHERE 1=1";
+        for (int cont = 0; cont < p1.Count; cont++)
         {
-            mail_ok = dt.Rows[0][0].ToString();
-        }
-        if (NumCli != "") {
-            SQL = "select 1 from eclient where cliclef='" + NumCli + "'";
-            dt = conexion.ObtieneDataTable(SQL);
-            if (dt.Rows.Count == 0)
+            if (usuario.Equals(p1[cont]))
             {
-                if (NumCli != "")
-                {
-                    return "window.location.href='mail.asp?msg= Este numero de cliente '" + NumCli + "' no existe.";
-                }
+                SQL = SQL + " and id_rep in (14,173,24) ";
             }
         }
-        if (id_mail != "")
+        for (int cont = 0; cont < p2.Count; cont++)
         {
-            if (NumCli != "")
+            if (usuario.Equals(p2[cont]))
             {
-                SQL = " update rep_mail set nombre= '" + nombre + "', ";
-                SQL = SQL + " mail = '" + correo + "', ";
-                SQL = SQL + " client_num = '" + NumCli + "', ";
-                SQL = SQL + " tercero = '" + Tercero + "', ";
-                SQL = SQL + " status = '" + status + "' ";
-                SQL = SQL + " where id_mail= '" + id_mail + "' ";
-                dt = conexion.ObtieneDataTable(SQL);
+                SQL = SQL + " and id_rep = 174 ";
             }
+        }
+        SQL = SQL + "  order by 2";
 
-            msg = "Contacto Modificado";
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+    //case 1
+    public DataTable ftn_lista_reporte(string usuario)
+    {
+        List<string> p1 = new List<string>();
+        List<string> p2 = new List<string>();
+        p1 = obj_func_genericas.perfil1();
+        p2 = obj_func_genericas.perfil1();
 
-            allOk = 1;
+        SQL = "select repdet.ID_CRON, \n";
+        SQL = SQL + "trim(nvl(repdet.NAME,''))NOMBRE, \n";
+        SQL = SQL + "rep.id_rep, trim(nvl(rep.name,'')) REP_NAME\n";
+        SQL = SQL + ", repdet.CLIENTE, \n";
+        SQL = SQL + "InitCap(cli.clinom) INIT_CAP, \n";
+        SQL = SQL + "repdet.FRECUENCIA, \n";
+        SQL = SQL + "tipo.DESCRIPCION, \n";
+        SQL = SQL + "repdet.mail_ok, nvl(cron.active, 0)NVL_ACTIVE , \n";
+        SQL = SQL + "repdet.mail_error\n";
+        SQL = SQL + ", cli.clirfc, case when  rep.id_rep in (80,98,106,108 \n";
+        SQL = SQL + ",110,114,117,118,126,130,142,159,160, 169,171,174,179,175 \n";
+        SQL = SQL + ",176,183,186,199,201,221,228,236,240,242,244,248,\n";
+        SQL = SQL + "249,260,263,287,288,290) then 'DISTRIBUCION' else 'COEX' end Area_Negocio, \n";
+        SQL = SQL + "cron.priorite as Prioridad, \n";
+        SQL = SQL + "tipo.DESCRIPCION as frecuencia_desc, \n";
+        SQL = SQL + "repdet.days_deleted as dias_servidor, \n";
+        SQL = SQL + "cron.jours AS DIA_MES, \n";
+        SQL = SQL + "cron.jour_semaine AS DIA_SEMANA, \n";
+        SQL = SQL + "cron.heures AS HORA, \n";
+        SQL = SQL + "cron.minutes AS MINUTO,\n";
+        SQL = SQL + "repdet.CLIENTE || ' ' || repdet.NAME AS Num_Nom, \n";
+        SQL = SQL + "nvl(repdet.param_1,' '), \n";
+        SQL = SQL + "nvl(repdet.param_2,' '),\n";
+        SQL = SQL + "nvl(repdet.param_3,' '),\n";
+        SQL = SQL + "nvl(repdet.param_4,' '), \n";
+        SQL = SQL + "repdet.created_by, \n";
+        SQL = SQL + "repdet.date_created, \n";
+        SQL = SQL + "repdet.modified_by, \n";
+        SQL = SQL + "repdet.date_modified, \n";
+        SQL = SQL + "rep.COMMAND AS COMMAND from rep_detalle_reporte repdet, \n";
+        SQL = SQL + "rep_reporte rep, \n";
+        SQL = SQL + "rep_chron cron, \n";
+        SQL = SQL + "REP_TIPO_FRECUENCIA tipo,\n";
+        SQL = SQL + "eclient cli where 1=1";
+        SQL = SQL + " and nvl(cron.active, 0) = 1";
+        SQL = SQL + " and rep.ID_REP = repdet.id_rep and cron.ID_RAPPORT(+) = repdet.id_cron \n";
+        SQL = SQL + "and tipo.ID_TIPO_FREC = repdet.FRECUENCIA \n";
+        SQL = SQL + "and cli.cliclef = repdet.cliente\n";
+        for (int cont = 0; cont < p1.Count; cont++)
+        {
+            if (usuario.Equals(p1[cont]))
+            {
+                SQL = SQL + " and rep.id_rep in (14,173,24)\n";
+            }
+        }
+        for (int cont = 0; cont < p2.Count; cont++)
+        {
+            if (usuario.Equals(p2[cont]))
+            {
+                SQL = SQL + " and rep.id_rep = 174\n";
+            }
+        }
+        SQL = SQL + " order by 2";
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_nombre_reporte(string idCron)
+    {
+        SQL = string.Format("select Name FROM rep_detalle_reporte repdet WHERE repdet.ID_CRON = '{0}'" + idCron);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_lista_idcontactos(string idLista, string tipoLista)
+    {
+        if (tipoLista.Equals("grupo"))
+        {
+            SQL = string.Format("select id_dest_lista from rep_lista_mail where id_lista = '{0}'" + idLista);
         }
         else
-        //'verificacion que el correo es unico en la base
         {
-            if (NumCli != "")
-            {
-                SQL = " select 1 from rep_mail where mail = '" + correo + "' ";
-                SQL = SQL + " and CLIENT_NUM = '" + NumCli + "'";
-                dt = conexion.ObtieneDataTable(SQL);
-                if (dt.Rows.Count > 0)
-                {
-                    return "window.location.href='mail.asp?msg= Este correo ya existe para este cliente.";
-                }
-            }
+            SQL = string.Format("select id_dest from rep_dest_mail where id_dest_mail = '{0}'" + idLista);
+        }
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
 
-            //            'verificar que no se capturen correos de Logis para otro numero de cliente que el 9929
+    public DataTable ftn_lista_contactos(string idLista)
+    {
+        SQL = string.Format("select nombre, mail, decode(client_num, 9929,'Logis',client_num) as client_num, " +
+            "decode(tercero, 1, 'Si', '') as tercero From rep_mail Where id_mail  in ('{0}') and status = 1 order " +
+            "by client_num, tercero desc, nombre ", idLista);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
 
-            if (NumCli != ""){
-                //'<JEMV
-                //if (InStr(LCase(Request.Form("correo")), "@logis.com.mx") > 0 and NumCli <> "9929" then
-                //'					Response.Redirect asp_self & "?msg=" & Server.URLEncode ("Favor de crear los correos de Logis con el numero de cliente 9929.")
-                //'				end if
-                //'JEMV>
+    public DataTable ftn_obtener_idmail_idcrone(string idCrone)
+    {
+        SQL = string.Format("select MAIL_OK, ID_CRON from rep_detalle_reporte where ID_CRON = '{0}'" + idCrone);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
 
+    public DataTable ftn_obtener_cliente(string idCrone)
+    {
+        SQL = string.Format("select 1 from eclient where cliclef = '{0}'", idCrone);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
 
-                //                SQL = "insert into rep_mail (ID_MAIL, NOMBRE, MAIL, CLIENT_NUM, TERCERO, STATUS) " & _
+    public bool ftn_modifica_repMail(string nombre, string correo, string numCli, string tercero,
+        string status, string idMail)
+    {
+        SQL = string.Format(" update rep_mail set nombre= '{0}', mail = '{1}', " +
+              " client_num = '{2}', tercero = '{3}', " +
+              " status = '{4}' where id_mail= '{5}' ", nombre, correo, numCli, tercero, status, idMail);
+        ejecuta_querye = conexion.EjecutarQuery(SQL);
+        SQL = "";
+        return ejecuta_querye;
+    }
 
-                //                        " values  (seq_mail.nextval, '" & _
+    public DataTable ftn_validar_correunico(string correo, string numCliente)
+    {
+        SQL = string.Format(" select 1 from rep_mail where mail = '{0}' and CLIENT_NUM = '{1}'", correo, numCliente);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
 
-                //                        SQLEscape(Request.Form("nombre")) & "', '" + correo + _
+    public string ftn_insertar_repMail(string idMail, string nombre, string mail, string numCliente, string tercero, string status)
+    {
+        string res = "";
+        try
+        {
+            SQL = string.Format("insert into rep_mail (ID_MAIL, NOMBRE, MAIL, CLIENT_NUM, TERCERO, STATUS) values" +
+                "(seq_mail.nextval,'{0}','{1}','{2}','{3}','{4}','{5}')", idMail, nombre, mail, numCliente, tercero, status);
+            ejecuta_querye = conexion.EjecutarQuery(SQL);
+            SQL = "";
 
-                //                        "', '" + NumCli + "', null,  1" & _
-
-                //                        " )"
-            }
-            else {
-                //            '<JEMV
-                //'				if InStr(LCase(Request.Form("correo")), "@logis.com.mx") > 0 and Request.Form("cli_num") <> "9929" then
-                //'					Response.Redirect asp_self & "?msg=" & Server.URLEncode ("Favor de crear los correos de Logis con el numero de cliente 9929.")
-                //'				end if
-                //'JEMV>
-
-
-                //                SQL = "insert into rep_mail (ID_MAIL, NOMBRE, MAIL, CLIENT_NUM, TERCERO, STATUS) " & _
-
-                //                        " values  (seq_mail.nextval, '" & _
-
-                //                        SQLEscape(Request.Form("nombre")) & "', '" + correo + _
-
-                //                        "', '" & SQLescape(Request.Form("cli_num")) & "', null,  1" & _
-
-                //                        " )"
-
-            }
-
-
-            //            msg = "Contacto incluido"
-
-            //            allOk = 1
+            res = "Contacto incluido";
 
         }
-                return "";
+        catch (Exception ex)
+        {
+            res = "Error";
+        }
+        return res;
+    }
+
+    public DataTable ftn_obtener_idmail_numCliente(string correo, string numCliente)
+    {
+        SQL = string.Format(" select ID_MAIL,CLIENT_NUM from rep_mail where mail = '{0}' and CLIENT_NUM = '{1}'",
+            correo, numCliente);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_insertar_rep_dest_mail(string idMail, string idDestino)
+    {
+        SQL = string.Format("insert into rep_dest_mail (id_dest_mail, id_dest) values ('{0}','{1}')", idMail, idDestino);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_obtener_busca_contactos()
+    {
+        SQL = string.Format("select distinct client_num from rep_mail order by client_num");
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public string ftn_borrar_repMail(string mail)
+    {
+        string res = "";
+        try
+        {
+            SQL = string.Format("delete from rep_mail where id_mail= '{0}'", mail);
+            ejecuta_querye = conexion.EjecutarQuery(SQL);
+            SQL = "";
+            res = "Contacto borrado";
+        }
+        catch (Exception ex)
+        {
+            res = "Error";
+        }
+        return res;
+    }
+
+    //Inicia reporocesos Case 2 reprocesos
+    public DataTable ftn_siguiente_registro()
+    {
+        SQL = "select SEQ_CHRON.nextval from dual";
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_insert_rep_detalle_reporte(string num_reporte, string last_conf_date_1,
+        string last_conf_date_2, string reqnum_reporte)
+    {
+        SQL = string.Format("insert into REP_DETALLE_REPORTE " +
+        "(id_cron, id_rep, dest_mail, mail_ok, mail_error, name, cliente, frecuencia, file_name, carpeta, param_1, " +
+        "param_2, days_deleted, last_created, last_conf_date_1, last_conf_date_2, test, param_3, created_BY, " +
+        "date_modified select '{0}', id_rep, 'desarrollo_web@logis.com.mx', 6381, 6381, name, cliente," +
+        " frecuencia, file_name, carpeta, param_1, param_2, days_deleted, last_created, " +
+        "to_char(to_date('{1}','mm/dd/yyyy')) last_conf_date_1, " +
+        "to_date('{2}', 'mm/dd/yyyy') last_conf_date_2, test, " +
+        "param_3, created_BY, date_modified from REP_DETALLE_REPORTE where ID_CRON = '{3}'", num_reporte
+        , last_conf_date_1, last_conf_date_2, reqnum_reporte);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_insert_repchron(string num_reporte)
+    {
+        SQL = string.Format("insert into rep_chron (id_chron, id_rapport, priorite, test, active) " +
+              "values (SEQ_CHRON.nextval, '{0}', 1,0, 1)", num_reporte);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+    //Actualiza tablas de reproceso
+    public DataTable ftn_update_rep_detalle_reporte(string tipo_reporte, string report_name, string file_name,
+        string carpeta, string frecuencia, string con_conf, string diasServidor, string param_1, string param_2,
+        string param_3, string param_4, string usuario, string numreporte)
+    {
+
+        SQL = string.Format(" update REP_DETALLE_REPORTE " +
+        " set ID_REP = '{0}' " +
+        ", NAME ='{1}' " +
+        ", FILE_NAME = '{2}' " +
+        ", CARPETA = '{3}' " +
+        ", FRECUENCIA = '{4}' " +
+        ", CONFIRMACION = '{5}' " +
+        ", DAYS_DELETED = '{6}' " +
+        ", param_1 = '{7}'  " +
+        ", param_2 = '{8}'  " +
+        ", param_3 = '{9}'  " +
+        ", param_4 = '{10}'  " +
+        ", MODIFIED_BY = '{11}' " +
+        ", DATE_MODIFIED = sysdate " +
+        " where ID_CRON = '{12}' ",
+        tipo_reporte, report_name, file_name, carpeta,
+        frecuencia, con_conf, diasServidor, param_1,
+        param_2, param_3, param_4, usuario, numreporte);
+
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_update_rep_chron(string hora, string minutos, string dia, string mes,
+        string dia_semana, string prioridad, string num_reporte)
+    {
+        SQL = string.Format("update REP_CHRON " +
+        "set HEURES = '{0}'" +
+        ", MINUTES = '{1}'" +
+        ", JOURS = '{2}'" +
+        ", MOIS = '{3}'" +
+        ", JOUR_SEMAINE = '{4}'" +
+        ", PRIORITE = '{5}'" +
+        ", LAST_EXECUTION = null " +
+        "where ID_RAPPORT = '{6}'", hora, minutos, dia, mes, dia_semana,
+        prioridad, num_reporte);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_update_rep_reporte(string tempMsg, string tmpMensajeFecha, string tipoReporte)
+    {
+        SQL = string.Format("update REP_REPORTE " +
+        " set TEMP_MENSAJE = '{0}' " +
+        " , TEMP_MENSAJE_FECHA = to_date('{1}', 'mm/dd/yyyy') " +
+        " where ID_REP = '{2}'", tempMsg, tmpMensajeFecha, tipoReporte);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+    //case 3 desactivar / activar reportes
+    public string ftn_act_desa_rep_chron(string accion, string idreporte)
+    {
+        string res = "";
+        try
+        {
+            if (accion.Equals("desactivar"))
+            {
+                SQL = string.Format("update rep_chron set active = 0 where id_rapport = '{1}'", idreporte);
+                res = "Reporte desactivado.";
+            }
+            else if (accion.Equals("reactivar"))
+            {
+                SQL = string.Format("update rep_chron set active = 1, last_execution = null where id_rapport = '{1}'", idreporte);
+                res = "Reporte reactivado.";
+            }
+            ejecuta_querye = conexion.EjecutarQuery(SQL);
+            SQL = "";
+        }
+        catch (Exception ex)
+        {
+            res = "Error";
+        }
+        return res;
+
+
     }
 }

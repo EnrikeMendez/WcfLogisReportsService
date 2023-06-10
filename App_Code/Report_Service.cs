@@ -152,4 +152,20 @@ public class Report_Service : IReport_Service
       
         return "";
     }
+
+    [WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetConsultaReportes(string usuario)
+    {
+        obj_dt = obj_consultas_procesos.ftn_lista_reporte(usuario);
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
 }

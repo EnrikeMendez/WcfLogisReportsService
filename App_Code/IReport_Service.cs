@@ -55,4 +55,9 @@ public interface IReport_Service
 	[WebInvoke(Method = "GET",
 	ResponseFormat = WebMessageFormat.Json)]
 	string GetMail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero,string status);
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetConsultaReportes(string usuario);
 }
