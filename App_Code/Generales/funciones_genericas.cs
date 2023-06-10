@@ -5,6 +5,7 @@ using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 using Newtonsoft.Json;
 
+
 /// <summary>
 /// Descripción breve de funciones_genericas
 /// </summary>
