@@ -292,7 +292,7 @@ public class consultas_procesos
         return dt;
     }
     //case 1
-    public DataTable ftn_lista_reporte(string usuario)
+    public DataTable ftn_lista_reporte(string usuario, string status)
     {
         List<string> p1 = new List<string>();
         List<string> p2 = new List<string>();
@@ -315,25 +315,30 @@ public class consultas_procesos
         SQL = SQL + "cron.priorite as Prioridad, \n";
         SQL = SQL + "tipo.DESCRIPCION as frecuencia_desc, \n";
         SQL = SQL + "repdet.days_deleted as dias_servidor, \n";
-        SQL = SQL + "cron.jours AS DIA_MES, \n";
-        SQL = SQL + "cron.jour_semaine AS DIA_SEMANA, \n";
+        SQL = SQL + "nvl(cron.jours, ' ') AS DIA_MES, \n";
+        SQL = SQL + "nvl(cron.jour_semaine,' ') AS DIA_SEMANA, \n";
         SQL = SQL + "cron.heures AS HORA, \n";
         SQL = SQL + "cron.minutes AS MINUTO,\n";
         SQL = SQL + "repdet.CLIENTE || ' ' || repdet.NAME AS Num_Nom, \n";
-        SQL = SQL + "nvl(repdet.param_1,' '), \n";
-        SQL = SQL + "nvl(repdet.param_2,' '),\n";
-        SQL = SQL + "nvl(repdet.param_3,' '),\n";
-        SQL = SQL + "nvl(repdet.param_4,' '), \n";
-        SQL = SQL + "repdet.created_by, \n";
-        SQL = SQL + "repdet.date_created, \n";
-        SQL = SQL + "repdet.modified_by, \n";
-        SQL = SQL + "repdet.date_modified, \n";
+        SQL = SQL + "nvl(repdet.param_1,' ') PARAM_1, \n";
+        SQL = SQL + "nvl(repdet.param_2,' ') PARAM_2, \n";
+        SQL = SQL + "nvl(repdet.param_3,' ') PARAM_3, \n";
+        SQL = SQL + "nvl(repdet.param_4,' ') PARAM_4, \n";
+        SQL = SQL + "trim(nvl(repdet.created_by,' ')) USR_CREACION, \n";
+        SQL = SQL + "TO_char(repdet.date_created,'DD/MON/YYYY HH24:MI') CREACION, \n";
+        SQL = SQL + "trim(nvl(repdet.modified_by,' ')) USUARIO, \n";
+        SQL = SQL + "nvl(TO_char(repdet.date_modified,'DD/MON/YYYY HH24:MI'), ' ') MODIFICACION, \n ";
         SQL = SQL + "rep.COMMAND AS COMMAND from rep_detalle_reporte repdet, \n";
         SQL = SQL + "rep_reporte rep, \n";
         SQL = SQL + "rep_chron cron, \n";
-        SQL = SQL + "REP_TIPO_FRECUENCIA tipo,\n";
+         SQL = SQL + "REP_TIPO_FRECUENCIA tipo,\n";
         SQL = SQL + "eclient cli where 1=1";
-        SQL = SQL + " and nvl(cron.active, 0) = 1";
+        if (status.Equals("Desactivar")) {
+            SQL = SQL + " and nvl(cron.active, 0) = 1";
+        } else {
+            SQL = SQL + " and nvl(cron.active, 0) = 0";
+        }
+        
         SQL = SQL + " and rep.ID_REP = repdet.id_rep and cron.ID_RAPPORT(+) = repdet.id_cron \n";
         SQL = SQL + "and tipo.ID_TIPO_FREC = repdet.FRECUENCIA \n";
         SQL = SQL + "and cli.cliclef = repdet.cliente\n";
