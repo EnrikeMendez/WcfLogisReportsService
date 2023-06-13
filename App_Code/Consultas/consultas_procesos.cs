@@ -317,7 +317,7 @@ public class consultas_procesos
         SQL = SQL + "repdet.days_deleted as dias_servidor, \n";
         SQL = SQL + "nvl(cron.jours, ' ') AS DIA_MES, \n";
         SQL = SQL + "nvl(cron.jour_semaine,' ') AS DIA_SEMANA, \n";
-        SQL = SQL + "cron.heures AS HORA, \n";
+        SQL = SQL + "nvl(cron.heures,'0') AS HORA, \n";
         SQL = SQL + "cron.minutes AS MINUTO,\n";
         SQL = SQL + "repdet.CLIENTE || ' ' || repdet.NAME AS Num_Nom, \n";
         SQL = SQL + "nvl(repdet.param_1,' ') PARAM_1, \n";
@@ -585,21 +585,20 @@ public class consultas_procesos
         return dt;
     }
     //case 3 desactivar / activar reportes
-    public string ftn_act_desa_rep_chron(string accion, string idreporte)
+    public string ftn_act_desa_rep_chron(string idreporte, string accion)
     {
         string res = "";
         try
         {
-            if (accion.Equals("desactivar"))
-            {
-                SQL = string.Format("update rep_chron set active = 0 where id_rapport = '{1}'", idreporte);
-                res = "Reporte desactivado.";
+            
+            SQL = string.Format("update rep_chron set active = '{0}', last_execution = null where id_rapport = '{1}'", accion, idreporte);
+            if (accion.Equals("1")) {
+                return "Reporte reactivado.";
+            } else {
+                return "Reporte desactivado.";
             }
-            else if (accion.Equals("reactivar"))
-            {
-                SQL = string.Format("update rep_chron set active = 1, last_execution = null where id_rapport = '{1}'", idreporte);
-                res = "Reporte reactivado.";
-            }
+            
+            
             ejecuta_querye = conexion.EjecutarQuery(SQL);
             SQL = "";
         }

@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "Service1" en el código, en svc y en el archivo de configuración.
 [AspNetCompatibilityRequirements(RequirementsMode
     = AspNetCompatibilityRequirementsMode.Allowed)]
+
 public class Report_Service : IReport_Service
 {
     consultas_procesos obj_consultas_procesos = new consultas_procesos();
@@ -163,6 +164,22 @@ public class Report_Service : IReport_Service
         if (obj_dt != null)
         {
             return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
+
+    [WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetStatusReporte(string idreporte, string accion)
+    {
+        String res = obj_consultas_procesos.ftn_act_desa_rep_chron(idreporte, accion);
+        if (obj_dt != null)
+        {
+            return res;
         }
         else
         {

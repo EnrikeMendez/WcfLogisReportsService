@@ -4,6 +4,7 @@ using System.ServiceModel.Web;
 
 // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de interfaz "IService1" en el código y en el archivo de configuración a la vez.
 [ServiceContractAttribute]
+
 public interface IReport_Service
 {
 	[OperationContract]
@@ -60,4 +61,9 @@ public interface IReport_Service
 	[WebInvoke(Method = "GET",
 	ResponseFormat = WebMessageFormat.Json)]
 	string GetConsultaReportes(string usuario, string status);
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetStatusReporte(string idreporte, string accion);
 }
