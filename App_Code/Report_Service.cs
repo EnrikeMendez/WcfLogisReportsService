@@ -186,4 +186,36 @@ public class Report_Service : IReport_Service
             return "Sin Información";
         }
     }
+
+    [WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetListaCorreos(string lista)
+    {
+        obj_dt = obj_consultas_procesos.ftn_lista_contactos(lista);
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
+
+    [WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetArmarContactos(string mail_id)
+    {
+        obj_dt = obj_consultas_procesos.ftn_armar_contactos(mail_id);
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
 }

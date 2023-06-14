@@ -318,7 +318,7 @@ public class consultas_procesos
         SQL = SQL + "nvl(cron.jours, ' ') AS DIA_MES, \n";
         SQL = SQL + "nvl(cron.jour_semaine,' ') AS DIA_SEMANA, \n";
         SQL = SQL + "nvl(cron.heures,'0') AS HORA, \n";
-        SQL = SQL + "cron.minutes AS MINUTO,\n";
+        SQL = SQL + "nvl(cron.minutes,'0') AS MINUTO,\n";
         SQL = SQL + "repdet.CLIENTE || ' ' || repdet.NAME AS Num_Nom, \n";
         SQL = SQL + "nvl(repdet.param_1,' ') PARAM_1, \n";
         SQL = SQL + "nvl(repdet.param_2,' ') PARAM_2, \n";
@@ -385,12 +385,22 @@ public class consultas_procesos
         return dt;
     }
 
-    public DataTable ftn_lista_contactos(string idLista)
+    public DataTable ftn_lista_contactos(string lista)
     {
-        SQL = string.Format("select nombre, mail, decode(client_num, 9929,'Logis',client_num) as client_num, " +
-            "decode(tercero, 1, 'Si', '') as tercero From rep_mail Where id_mail  in ('{0}') and status = 1 order " +
-            "by client_num, tercero desc, nombre ", idLista);
+        SQL = "select id_dest from rep_dest_mail where id_dest_mail = " + lista;
         dt = conexion.ObtieneDataTable(SQL);
+        
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_armar_contactos(string mail_id)
+    {
+        SQL = " select nombre, mail, decode(client_num, 9929,'Logis',client_num) as client_num " +
+                " , decode(tercero, 1, 'Si', '') as tercero From rep_mail Where id_mail  in (" + mail_id + ")" +
+                " and status = 1 order by client_num, tercero desc, nombre ";        
+        dt = conexion.ObtieneDataTable(SQL);
+
         SQL = "";
         return dt;
     }
