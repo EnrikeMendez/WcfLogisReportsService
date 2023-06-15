@@ -52,10 +52,11 @@ public interface IReport_Service
 	string GetModificaCambioPrioridadDinamica();
 
 
+
 	[OperationContract]
 	[WebInvoke(Method = "GET",
 	ResponseFormat = WebMessageFormat.Json)]
-	string GetMail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero,string status);
+	string GetMail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero, string status, string hdnURI);
 
 	[OperationContract]
 	[WebInvoke(Method = "GET",

@@ -17,7 +17,7 @@ public class Report_Service : IReport_Service
     funciones_genericas obj_func_genericas = new funciones_genericas();
     DataTable obj_dt = new DataTable();
 	Boolean ejecuto_querye;
-
+    string msg = string.Empty;
     System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
     [WebInvoke(Method = "GET",
@@ -144,15 +144,22 @@ public class Report_Service : IReport_Service
         }
     }
 
-   
-    [WebInvoke(Method ="GET",
-        BodyStyle =WebMessageBodyStyle.Wrapped,
-        ResponseFormat =WebMessageFormat.Json)]
-    public string GetMail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero,string status)
+
+    [WebInvoke(Method = "GET",
+        BodyStyle = WebMessageBodyStyle.Wrapped,
+        ResponseFormat = WebMessageFormat.Json)]
+    public string GetMail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero, string status, string hdnURI)
     {
-        //
-      
-        return "";
+        msg = obj_consultas_procesos.ftn_Mail(Id_Cron, NumCli, id_mail, nombre, correo, Tercero, status, hdnURI);
+        if (msg != "")
+        {
+
+            return string.Format("{0}", msg);
+        }
+        else
+        {
+            return string.Format("{0}", "Sin Información");
+        }
     }
 
     [WebInvoke(Method = "GET",
