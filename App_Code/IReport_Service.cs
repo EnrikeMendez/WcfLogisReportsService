@@ -16,24 +16,24 @@ public interface IReport_Service
 	CompositeType GetDataUsingDataContract(CompositeType composite);
 
 	// TODO: agregue aquí sus operaciones de servicio
-	
+
 	[OperationContract]
-    [WebInvoke(Method = "GET",
-     ResponseFormat = WebMessageFormat.Json)]
-    string GetMonitoreoRep();
+	[WebInvoke(Method = "GET",
+	 ResponseFormat = WebMessageFormat.Json)]
+	string GetMonitoreoRep();
 
 
-    [OperationContract]
-    [WebInvoke(Method = "GET",
-    ResponseFormat = WebMessageFormat.Json)]
-    string GetConsultaErrores();
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetConsultaErrores();
 
-    [OperationContract]
-    [WebInvoke(Method = "GET",
-    ResponseFormat = WebMessageFormat.Json)]
-    string GetSql(string sql);
-	
-	
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetSql(string sql);
+
+
 	[OperationContract]
 	[WebInvoke(Method = "GET",
 	ResponseFormat = WebMessageFormat.Json)]
@@ -44,8 +44,8 @@ public interface IReport_Service
 	[WebInvoke(Method = "GET",
 	ResponseFormat = WebMessageFormat.Json)]
 	string GetModificaCambioPrioridad(string id_crons, string prioridad);
-	
-	
+
+
 	[OperationContract]
 	[WebInvoke(Method = "GET",
 	ResponseFormat = WebMessageFormat.Json)]
@@ -77,4 +77,29 @@ public interface IReport_Service
 	[WebInvoke(Method = "GET",
 	ResponseFormat = WebMessageFormat.Json)]
 	string GetArmarContactos(string mail_id);
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetArmarCorreos(string mail_list, string id_client);
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetValidaCorreos(string mail_list);
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetValidaCorreosOriginales(string mail_list);
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetEliminaOriginales(string mail_list);
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetInsertaRegistro(string nameobjeto, string contenareglo);
 }

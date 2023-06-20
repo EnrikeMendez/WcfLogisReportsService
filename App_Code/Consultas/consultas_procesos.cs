@@ -13,7 +13,7 @@ public class consultas_procesos
     DataTable dt = new DataTable();
     DB conexion = new DB();
     string SQL;
-	Boolean ejecuta_querye;
+    Boolean ejecuta_querye;
 
     //Variables procesos:
     int backDays = 1;
@@ -71,9 +71,9 @@ public class consultas_procesos
         dt = conexion.ObtieneDataTable(SQL);
         return dt;
     }
-	
-	
-	public DataTable ftn_consulta_cambio_prioridad()
+
+
+    public DataTable ftn_consulta_cambio_prioridad()
     {
         SQL = " select reporte.id_rep, reporte.name as nombre_reporte, chron.priorite, cliente, rep_det.id_cron, rep_det.name as nombre_detalle, TO_char(date_created,'DD/MON/YYYY HH24:MI') as hora_creacion, rep_det.dest_mail, id_chron \n";
         SQL = SQL + " from rep_detalle_reporte \n";
@@ -97,8 +97,8 @@ public class consultas_procesos
         SQL = "";
         return ejecuta_querye;
     }
-	
-	 public bool ftn_modifica_cambio_prioridad_dinamica()
+
+    public bool ftn_modifica_cambio_prioridad_dinamica()
     {
         SQL = "select reporte.id_rep,  chron.priorite, rep_det.id_cron, chron.id_chron \n";
         SQL = SQL + " from rep_detalle_reporte rep_det  \n";
@@ -329,14 +329,17 @@ public class consultas_procesos
         SQL = SQL + "rep.COMMAND AS COMMAND from rep_detalle_reporte repdet, \n";
         SQL = SQL + "rep_reporte rep, \n";
         SQL = SQL + "rep_chron cron, \n";
-         SQL = SQL + "REP_TIPO_FRECUENCIA tipo,\n";
+        SQL = SQL + "REP_TIPO_FRECUENCIA tipo,\n";
         SQL = SQL + "eclient cli where 1=1";
-        if (status.Equals("Desactivar")) {
+        if (status.Equals("Desactivar"))
+        {
             SQL = SQL + " and nvl(cron.active, 0) = 1";
-        } else {
+        }
+        else
+        {
             SQL = SQL + " and nvl(cron.active, 0) = 0";
         }
-        
+
         SQL = SQL + " and rep.ID_REP = repdet.id_rep and cron.ID_RAPPORT(+) = repdet.id_cron \n";
         SQL = SQL + "and tipo.ID_TIPO_FREC = repdet.FRECUENCIA \n";
         SQL = SQL + "and cli.cliclef = repdet.cliente\n";
@@ -387,7 +390,7 @@ public class consultas_procesos
     {
         SQL = "select id_dest from rep_dest_mail where id_dest_mail = " + lista;
         dt = conexion.ObtieneDataTable(SQL);
-        
+
         SQL = "";
         return dt;
     }
@@ -396,7 +399,7 @@ public class consultas_procesos
     {
         SQL = " select nombre, mail, decode(client_num, 9929,'Logis',client_num) as client_num " +
                 " , decode(tercero, 1, 'Si', '') as tercero From rep_mail Where id_mail  in (" + mail_id + ")" +
-                " and status = 1 order by client_num, tercero desc, nombre ";        
+                " and status = 1 order by client_num, tercero desc, nombre ";
         dt = conexion.ObtieneDataTable(SQL);
 
         SQL = "";
@@ -598,15 +601,18 @@ public class consultas_procesos
         string res = "";
         try
         {
-            
+
             SQL = string.Format("update rep_chron set active = '{0}', last_execution = null where id_rapport = '{1}'", accion, idreporte);
-            if (accion.Equals("1")) {
+            if (accion.Equals("1"))
+            {
                 return "Reporte reactivado.";
-            } else {
+            }
+            else
+            {
                 return "Reporte desactivado.";
             }
-            
-            
+
+
             ejecuta_querye = conexion.EjecutarQuery(SQL);
             SQL = "";
         }
@@ -615,7 +621,83 @@ public class consultas_procesos
             res = "Error";
         }
         return res;
+    }
 
+    public DataTable ftn_modicacion_lista_correos(string mail_list, string id_client)
+    {
+        SQL = string.Format("select distinct id_mail, nombre, mail, decode(client_num, 9929,'Logis',client_num) as client_num" +
+                ", decode(tercero, 1, 'Si', '') as TERCERO, decode(id_dest_mail,'{0}', 'checked') checked" +
+                " From rep_mail, rep_dest_mail" +
+                " Where id_dest(+) = id_mail" +
+                " and client_num in ('{1}', 9929)" +
+                " and status = 1" +
+                " order by client_num, tercero desc, nombre, checked", mail_list, id_client);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
 
+    public DataTable ftn_Valida_Correos(string mail_list)
+    {
+        SQL = string.Format("SELECT ID_CRON, NAME FROM REP_DETALLE_REPORTE WHERE MAIL_OK = '{0}'", mail_list);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public DataTable ftn_Valida_Correos_Originales(string mail_list)
+    {
+        SQL = string.Format("SELECT LISTAGG(ID_DEST,',') WITHIN GROUP(ORDER BY  ID_DEST) ORIGINALES FROM rep_dest_mail WHERE ID_DEST_MAIL = '{0}'", mail_list);
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+    public string ftn_Elimina_Originales(string mail_list)
+    {
+        string res = "";
+        try
+        {
+            SQL = string.Format("delete from rep_dest_mail where id_dest_mail = '{0}'", mail_list);
+            ejecuta_querye = conexion.EjecutarQuery(SQL);
+            SQL = "";
+            res = "";
+        }
+        catch (Exception ex)
+        {
+            res = "Error";
+        }
+        return res;
+    }
+
+    public string ftn_Inserta_Registro(string nameobjeto, string contenareglo)
+    {
+        string res = "";
+        if (contenareglo.Equals(""))
+        {
+            res = "- escoge al menos un contacto.";
+        }
+        else
+        {
+            contenareglo = contenareglo.Remove(contenareglo.Length - 1);
+            char caracter = ',';
+            string[] referencias = contenareglo.Split(caracter);
+            try
+            {
+                for (int i = 0; i < referencias.Length; i++)
+                {
+                    SQL = string.Format(" insert into rep_dest_mail (id_dest_mail, id_des) " +
+                    " values ('{0}','{1}')", nameobjeto, referencias[i]);
+                    ejecuta_querye = conexion.EjecutarQuery(SQL);
+                    SQL = "";
+                }
+                res = "";
+            }
+            catch (Exception ex)
+            {
+                res = "Error";
+            }
+        }
+        return res;
     }
 }
