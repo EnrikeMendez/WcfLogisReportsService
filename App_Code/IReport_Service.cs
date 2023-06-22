@@ -102,4 +102,19 @@ public interface IReport_Service
 	[WebInvoke(Method = "GET",
 	ResponseFormat = WebMessageFormat.Json)]
 	string GetInsertaRegistro(string nameobjeto, string contenareglo);
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetModificaReporte(string usuario, string idCron);
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetReporte(string usuario, string idreporte);
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetReferencia(string idfrecuencia);
 }

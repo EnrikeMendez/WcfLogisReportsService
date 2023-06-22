@@ -306,7 +306,53 @@ public class Report_Service : IReport_Service
         }
     }
 
+    [WebInvoke(Method = "GET",
+   BodyStyle = WebMessageBodyStyle.Wrapped,
+   ResponseFormat = WebMessageFormat.Json)]
+    public string GetModificaReporte(string usuario, string idCron)
+    {
+        obj_dt = obj_consultas_procesos.ftn_verlista_contactos(usuario, idCron);
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
 
+    [WebInvoke(Method = "GET",
+   BodyStyle = WebMessageBodyStyle.Wrapped,
+   ResponseFormat = WebMessageFormat.Json)]
+    public string GetReporte(string usuario, string idreporte)
+    {
+        obj_dt = obj_consultas_procesos.ftn_muestra_tiporeporte(usuario, idreporte);
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
+
+    [WebInvoke(Method = "GET",
+   BodyStyle = WebMessageBodyStyle.Wrapped,
+   ResponseFormat = WebMessageFormat.Json)]
+    public string GetReferencia(string idfrecuencia)
+    {
+        obj_dt = obj_consultas_procesos.ftn_muestra_tipofrecuencia(idfrecuencia);
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return "Sin Información";
+        }
+    }
 
 
 }

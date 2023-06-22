@@ -228,7 +228,7 @@ public class consultas_procesos
         SQL = " select repdet.ID_CRON, repdet.NAME, rep.ID_REP, rep.name, repdet.CLIENTE, InitCap(cli.clinom)" +
         ", repdet.CARPETA, repdet.FILE_NAME, repdet.LAST_CREATED, repdet.MAIL_OK, repdet.MAIL_ERROR" +
         ", repdet.FRECUENCIA, tipo.DESCRIPCION, cron.HEURES, cron.MINUTES, cron.JOURS" +
-        ", cron.MOIS, cron.JOUR_SEMAINE, cron.PRIORITE, nvl(rep.subcarpeta,' '), rep.TEMP_MENSAJE_FECHA" +
+        ", cron.MOIS, cron.JOUR_SEMAINE, cron.PRIORITE, nvl(rep.subcarpeta,' ') SUBCARPETA, rep.TEMP_MENSAJE_FECHA" +
         ", rep.TEMP_MENSAJE, rep.NUM_OF_PARAM, decode(repdet.confirmacion, '1', 'checked')" +
         ", repdet.days_deleted from rep_detalle_reporte repdet  , rep_reporte rep  , rep_chron cron" +
         ", REP_TIPO_FRECUENCIA tipo, eclient cli where rep.ID_REP = repdet.id_rep and cron.ID_RAPPORT = repdet.id_cron " +
@@ -260,15 +260,15 @@ public class consultas_procesos
         return dt;
     }
 
-    public DataTable ftn_muestra_tiporeporte(string usuario)
+    public DataTable ftn_muestra_tiporeporte(string usuario, string idreporte)
     {
         List<string> p1 = new List<string>();
         List<string> p2 = new List<string>();
         p1 = obj_func_genericas.perfil1();
         p2 = obj_func_genericas.perfil1();
 
-        SQL = " select id_rep, name, decode(id_rep, , 'selected')" +
-            " from rep_reporte WHERE 1=1";
+        SQL = String.Format(" select id_rep, name, decode(id_rep,'{0}', 'selected') SELECCION " +
+            " from rep_reporte WHERE 1=1", idreporte);
         for (int cont = 0; cont < p1.Count; cont++)
         {
             if (usuario.Equals(p1[cont]))
@@ -700,4 +700,17 @@ public class consultas_procesos
         }
         return res;
     }
+
+
+    public DataTable ftn_muestra_tipofrecuencia(string idfrecuencia)
+    {        
+        SQL = String.Format(" select tipo.ID_TIPO_FREC, tipo.DESCRIPCION, decode(tipo.ID_TIPO_FREC, '{0}', 'selected') SELECCION from REP_TIPO_FRECUENCIA tipo order by 2", idfrecuencia);        
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+        return dt;
+    }
+
+
+
+    
 }
