@@ -118,10 +118,9 @@ public class consultas_procesos
         string msg = string.Empty;
         string idMail = string.Empty;
         int allOk = 0;
-        if (Id_Cron != "undefined")
+        if (Id_Cron != "undefined" && Id_Cron != "")
         {
-            SQL = " select MAIL_OK,ID_CRON from rep_detalle_reporte where ID_CRON = '" + Id_Cron + "' ";
-            dt = conexion.ObtieneDataTable(SQL);
+            dt = ftn_obtener_idmail_idcrone(Id_Cron);
         }
         if (dt.Rows.Count > 0)
         {
@@ -129,13 +128,12 @@ public class consultas_procesos
         }
         if (NumCli != "")
         {
-            SQL = "select 1 from eclient where cliclef='" + NumCli + "'";
-            dt = conexion.ObtieneDataTable(SQL);
+            dt = ftn_obtener_cliente(NumCli);
             if (dt.Rows.Count == 0)
             {
                 if (NumCli != "")
                 {
-                    return "window.location.href='mail.asp?msg= Este numero de cliente '" + NumCli + "' no existe.";
+                    return "Este numero de cliente '" + NumCli + "' no existe.";
                 }
             }
         }
@@ -143,79 +141,51 @@ public class consultas_procesos
         {
             if (NumCli != "")
             {
-                SQL = " update rep_mail set nombre= '" + nombre + "', ";
-                SQL = SQL + " mail = '" + correo + "', ";
-                SQL = SQL + " client_num = '" + NumCli + "', ";
-                SQL = SQL + " tercero = '" + Tercero + "', ";
-                SQL = SQL + " status = '" + status + "' ";
-                SQL = SQL + " where id_mail= '" + id_mail + "' ";
-                dt = conexion.ObtieneDataTable(SQL);
+                ejecuta_querye = ftn_modifica_repMail(nombre, correo, NumCli, Tercero, status, id_mail);
+                if (ejecuta_querye)
+                {
+                    msg = "Contacto Modificado";
+                    allOk = 1;
+                }
             }
-
-            msg = "Contacto Modificado";
-
-            allOk = 1;
         }
         else
         //'verificacion que el correo es unico en la base
         {
             if (NumCli != "")
             {
-                SQL = " select 1 from rep_mail where mail = '" + correo + "' ";
-                SQL = SQL + " and CLIENT_NUM = '" + NumCli + "'";
-                dt = conexion.ObtieneDataTable(SQL);
+                dt = ftn_validar_correunico(correo, NumCli);
                 if (dt.Rows.Count > 0)
                 {
-                    return "window.location.href='mail.asp?msg= Este correo ya existe para este cliente.";
+                    return "Este correo ya existe para este cliente.";
                 }
             }
-
-            //            'verificar que no se capturen correos de Logis para otro numero de cliente que el 9929
-
             if (NumCli != "")
             {
-                SQL = "insert into rep_mail (ID_MAIL, NOMBRE, MAIL, CLIENT_NUM, TERCERO, STATUS) ";
-                SQL = SQL + " values  (seq_mail.nextval, '";
-                SQL = SQL + nombre + "', '" + correo;
-                SQL = SQL + "', '" + NumCli + "', null,  1 )";
+                msg = ftn_insertar_repMail(id_mail, nombre, correo, NumCli, Tercero, status);
+                allOk = 1;
             }
-
-            msg = "Contacto incluido";
-            allOk = 1;
-
         }
-        ejecuta_querye = conexion.EjecutarQuery(SQL);
-
-        SQL = " select ID_MAIL,CLIENT_NUM from rep_mail where mail = '" + correo + "' ";
-        SQL = SQL + " and CLIENT_NUM = '" + NumCli + "'";
-        dt = conexion.ObtieneDataTable(SQL);
-
+        dt = ftn_obtener_idmail_numCliente(correo, NumCli);
         if (dt.Rows.Count > 0)
         {
             idMail = dt.Rows[0][0].ToString();
         }
-        SQL = " insert into rep_dest_mail (id_dest_mail, id_dest) ";
-        SQL = SQL + " values ('" + mail_ok + "','" + idMail + "' ) ";
-
-        ejecuta_querye = conexion.EjecutarQuery(SQL);
-
-        if (NumCli != "")
+        if (mail_ok != "")
         {
-
-            return hdnURI + msg + "El usuario " + correo + " fue agregado correctamente.";
-
+            ejecuta_querye = ftn_insertar_rep_dest_mail(mail_ok, idMail);
+            if (ejecuta_querye)
+            {
+                return hdnURI + msg + "El usuario " + correo + " fue agregado correctamente.";
+            }
+           
         }
-
-        else
-        {
-            return "window.location.href='mail.asp?msg=" + msg;
-        }
-
+        return msg;
     }
 
-    //08-06-2023 JM
-    //ver_lista
-    public DataTable ftn_verlista_contactos(string usuario, string idCron)
+        //08-06-2023 JM
+        //ver_lista
+        public DataTable ftn_verlista_contactos(string usuario, string idCron)
     {
         List<string> p1 = new List<string>();
         List<string> p2 = new List<string>();
@@ -365,7 +335,7 @@ public class consultas_procesos
 
     public DataTable ftn_nombre_reporte(string idCron)
     {
-        SQL = string.Format("select Name FROM rep_detalle_reporte repdet WHERE repdet.ID_CRON = '{0}'" + idCron);
+        SQL = string.Format("select Name FROM rep_detalle_reporte repdet WHERE repdet.ID_CRON = '" + idCron + "'" );
         dt = conexion.ObtieneDataTable(SQL);
         SQL = "";
         return dt;
@@ -414,9 +384,9 @@ public class consultas_procesos
         return dt;
     }
 
-    public DataTable ftn_obtener_cliente(string idCrone)
+    public DataTable ftn_obtener_cliente(string numCli)
     {
-        SQL = string.Format("select 1 from eclient where cliclef = '{0}'", idCrone);
+        SQL = string.Format("select 1 from eclient where cliclef = '{0}'", numCli);
         dt = conexion.ObtieneDataTable(SQL);
         SQL = "";
         return dt;
@@ -447,7 +417,7 @@ public class consultas_procesos
         try
         {
             SQL = string.Format("insert into rep_mail (ID_MAIL, NOMBRE, MAIL, CLIENT_NUM, TERCERO, STATUS) values" +
-                "(seq_mail.nextval,'{0}','{1}','{2}','{3}','{4}','{5}')", idMail, nombre, mail, numCliente, tercero, status);
+                "(seq_mail.nextval,'{0}','{1}','{2}','{3}','{4}')", nombre, mail, numCliente, tercero, status);
             ejecuta_querye = conexion.EjecutarQuery(SQL);
             SQL = "";
 
@@ -470,12 +440,12 @@ public class consultas_procesos
         return dt;
     }
 
-    public DataTable ftn_insertar_rep_dest_mail(string idMail, string idDestino)
+    public bool ftn_insertar_rep_dest_mail(string idMail, string idDestino)
     {
         SQL = string.Format("insert into rep_dest_mail (id_dest_mail, id_dest) values ('{0}','{1}')", idMail, idDestino);
-        dt = conexion.ObtieneDataTable(SQL);
+        ejecuta_querye = conexion.EjecutarQuery(SQL);
         SQL = "";
-        return dt;
+        return ejecuta_querye;
     }
 
     public DataTable ftn_obtener_busca_contactos()
@@ -601,8 +571,9 @@ public class consultas_procesos
         string res = "";
         try
         {
-
             SQL = string.Format("update rep_chron set active = '{0}', last_execution = null where id_rapport = '{1}'", accion, idreporte);
+            ejecuta_querye = conexion.EjecutarQuery(SQL);
+            SQL = "";
             if (accion.Equals("1"))
             {
                 return "Reporte reactivado.";
@@ -611,10 +582,6 @@ public class consultas_procesos
             {
                 return "Reporte desactivado.";
             }
-
-
-            ejecuta_querye = conexion.EjecutarQuery(SQL);
-            SQL = "";
         }
         catch (Exception ex)
         {

@@ -56,7 +56,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
     [WebInvoke(Method = "GET",
@@ -71,7 +71,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -88,7 +88,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            //return "Sin Información";
+            // return string.Format("{0}", "Sin Información");
             return string.Format("{0}", " Sin Informacion");
         }
     }
@@ -106,7 +106,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -123,7 +123,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -140,7 +140,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -153,7 +153,6 @@ public class Report_Service : IReport_Service
         msg = obj_consultas_procesos.ftn_Mail(Id_Cron, NumCli, id_mail, nombre, correo, Tercero, status, hdnURI);
         if (msg != "")
         {
-
             return string.Format("{0}", msg);
         }
         else
@@ -174,7 +173,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -190,7 +189,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -206,7 +205,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -222,7 +221,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -238,7 +237,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -254,7 +253,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -270,7 +269,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -286,7 +285,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -302,7 +301,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -318,7 +317,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -334,7 +333,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -350,7 +349,23 @@ public class Report_Service : IReport_Service
         }
         else
         {
-            return "Sin Información";
+             return string.Format("{0}", "Sin Información");
+        }
+    }
+
+    [WebInvoke(Method = "GET",
+  BodyStyle = WebMessageBodyStyle.Wrapped,
+  ResponseFormat = WebMessageFormat.Json)]
+    public string GetNombre_Reporte(string idCron)
+    {
+        obj_dt = obj_consultas_procesos.ftn_nombre_reporte(idCron);
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+             return string.Format("{0}", "Sin Información");
         }
     }
 
