@@ -56,7 +56,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
     [WebInvoke(Method = "GET",
@@ -71,7 +71,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -106,7 +106,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -123,7 +123,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -140,7 +140,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -205,7 +205,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -221,7 +221,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -237,7 +237,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -253,7 +253,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -269,7 +269,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -285,7 +285,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -301,7 +301,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -317,7 +317,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -333,7 +333,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -349,7 +349,7 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
         }
     }
 
@@ -365,9 +365,62 @@ public class Report_Service : IReport_Service
         }
         else
         {
-             return string.Format("{0}", "Sin Información");
+            return string.Format("{0}", "Sin Información");
+        }
+    }
+
+
+    [WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetConsultaTiposProcesosAduana()
+    {
+        obj_dt = obj_consultas_procesos.ftn_consulta_tipos_procesos_aduana();
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return string.Format("{0}", "Sin Información");
+        }
+    }
+
+
+
+    [WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetConsultaTiposProcesosTrading()
+    {
+        obj_dt = obj_consultas_procesos.ftn_consulta_tipos_procesos_trading();
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return string.Format("{0}", "Sin Información");
+        }
+    }
+
+
+    [WebInvoke(Method = "GET",
+    BodyStyle = WebMessageBodyStyle.Wrapped,
+    ResponseFormat = WebMessageFormat.Json)]
+    public string GetConsultaTiposProcesosAduanaTrading()
+    {
+        obj_dt = obj_consultas_procesos.ftn_consulta_tipos_procesos_aduana_trading();
+        if (obj_dt != null)
+        {
+            return obj_func_genericas.ftn_retorna_serializable(obj_dt).ToString();
+        }
+        else
+        {
+            return string.Format("{0}", "Sin Información");
         }
     }
 
 
 }
+

@@ -122,4 +122,22 @@ public interface IReport_Service
 	[WebInvoke(Method = "GET",
 	ResponseFormat = WebMessageFormat.Json)]
 	string GetNombre_Reporte(string idCron);
+
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetConsultaTiposProcesosAduana();
+
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetConsultaTiposProcesosTrading();
+
+	[OperationContract]
+	[WebInvoke(Method = "GET",
+	ResponseFormat = WebMessageFormat.Json)]
+	string GetConsultaTiposProcesosAduanaTrading();
+
 }

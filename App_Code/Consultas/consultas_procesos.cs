@@ -679,5 +679,57 @@ public class consultas_procesos
 
 
 
-    
+    public DataTable ftn_consulta_tipos_procesos_aduana()
+    {
+        SQL = " select rep.id_rep, rep.name, rep.num_of_param \n";
+        SQL = SQL + "  from rep_reporte rep \n";
+        SQL = SQL + " where id_rep in (74,59,182,143,104 ,81,24,23,22,21,20,17,13,187,189,192,193,194,198,216,219,220,223,224,225,229,134,230,232,239,241,245,246,255,258,225,238,267,272,274,273,275,277,205,210,231,269,296,162,298) order by name \n";
+
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+
+        return dt;
+
+    }
+
+
+    public DataTable ftn_consulta_tipos_procesos_trading()
+    {
+        SQL = "select rep.id_rep, rep.name, rep.num_of_param, 1 \n";
+        SQL = SQL + "					  from rep_reporte rep \n";
+        SQL = SQL + "				   where id_rep in (172,170,169,159,158,157,155,153,151,150,149,147,139,176, \n";
+        SQL = SQL + "				   138,137,121,112,110,100,99,98,96,94,89,82,43,42,37,171,191,80,197,213,218,222,  \n";
+        SQL = SQL + "				   226,234,235,237,249,256,250,251,259,261,262,266,271,175,265,303,304)  \n";
+        SQL = SQL + "				   union all  \n";
+        SQL = SQL + "				   select rep.id_rep, rep.name, rep.num_of_param, 2 \n";
+        SQL = SQL + "                   from rep_reporte rep \n";
+        SQL = SQL + "				   where id_rep in (320) \n";
+        SQL = SQL + "				   order by 4, 2 \n";
+
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+
+        return dt;
+
+    }
+
+
+    public DataTable ftn_consulta_tipos_procesos_aduana_trading()
+    {
+        SQL = "select rep.id_rep, rep.name, rep.num_of_param \n";
+        SQL = SQL + "from rep_reporte rep \n";
+        SQL = SQL + "where id_rep in (174) order by  name \n";
+        
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+
+        return dt;
+
+    }
+
+
+
+
+
+
 }
