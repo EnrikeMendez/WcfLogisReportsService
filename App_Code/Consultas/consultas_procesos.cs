@@ -19,6 +19,7 @@ public class consultas_procesos
     int backDays = 1;
     DateTime obj_date_time = DateTime.Now;
     funciones_genericas obj_func_genericas = new funciones_genericas();
+    funciones_genericas_reportes obj_func_genericas_rep = new funciones_genericas_reportes();
 
     public DataTable ftn_consulta_errores_reportes()
     {
@@ -178,19 +179,19 @@ public class consultas_procesos
             {
                 return hdnURI + msg + "El usuario " + correo + " fue agregado correctamente.";
             }
-           
+
         }
         return msg;
     }
 
-        //08-06-2023 JM
-        //ver_lista
-        public DataTable ftn_verlista_contactos(string usuario, string idCron)
+    //08-06-2023 JM
+    //ver_lista
+    public DataTable ftn_verlista_contactos(string usuario, string idCron)
     {
         List<string> p1 = new List<string>();
         List<string> p2 = new List<string>();
-        p1 = obj_func_genericas.perfil1();
-        p2 = obj_func_genericas.perfil1();
+        p1 = obj_func_genericas_rep.perfil1();
+        p2 = obj_func_genericas_rep.perfil1();
 
 
 
@@ -234,8 +235,8 @@ public class consultas_procesos
     {
         List<string> p1 = new List<string>();
         List<string> p2 = new List<string>();
-        p1 = obj_func_genericas.perfil1();
-        p2 = obj_func_genericas.perfil1();
+        p1 = obj_func_genericas_rep.perfil1();
+        p2 = obj_func_genericas_rep.perfil1();
 
         SQL = String.Format(" select id_rep, name, decode(id_rep,'{0}', 'selected') SELECCION " +
             " from rep_reporte WHERE 1=1", idreporte);
@@ -264,8 +265,8 @@ public class consultas_procesos
     {
         List<string> p1 = new List<string>();
         List<string> p2 = new List<string>();
-        p1 = obj_func_genericas.perfil1();
-        p2 = obj_func_genericas.perfil1();
+        p1 = obj_func_genericas_rep.perfil1();
+        p2 = obj_func_genericas_rep.perfil1();
 
         SQL = "select repdet.ID_CRON, \n";
         SQL = SQL + "trim(nvl(repdet.NAME,''))NOMBRE, \n";
@@ -335,7 +336,7 @@ public class consultas_procesos
 
     public DataTable ftn_nombre_reporte(string idCron)
     {
-        SQL = string.Format("select Name FROM rep_detalle_reporte repdet WHERE repdet.ID_CRON = '" + idCron + "'" );
+        SQL = string.Format("select Name FROM rep_detalle_reporte repdet WHERE repdet.ID_CRON = '" + idCron + "'");
         dt = conexion.ObtieneDataTable(SQL);
         SQL = "";
         return dt;
@@ -670,8 +671,8 @@ public class consultas_procesos
 
 
     public DataTable ftn_muestra_tipofrecuencia(string idfrecuencia)
-    {        
-        SQL = String.Format(" select tipo.ID_TIPO_FREC, tipo.DESCRIPCION, decode(tipo.ID_TIPO_FREC, '{0}', 'selected') SELECCION from REP_TIPO_FRECUENCIA tipo order by 2", idfrecuencia);        
+    {
+        SQL = String.Format(" select tipo.ID_TIPO_FREC, tipo.DESCRIPCION, decode(tipo.ID_TIPO_FREC, '{0}', 'selected') SELECCION from REP_TIPO_FRECUENCIA tipo order by 2", idfrecuencia);
         dt = conexion.ObtieneDataTable(SQL);
         SQL = "";
         return dt;
@@ -713,23 +714,36 @@ public class consultas_procesos
 
     }
 
-
     public DataTable ftn_consulta_tipos_procesos_aduana_trading()
     {
         SQL = "select rep.id_rep, rep.name, rep.num_of_param \n";
         SQL = SQL + "from rep_reporte rep \n";
         SQL = SQL + "where id_rep in (174) order by  name \n";
-        
+
         dt = conexion.ObtieneDataTable(SQL);
         SQL = "";
 
         return dt;
-
     }
 
 
+    public DataTable ftn_consulta_numero_parametros_reporte_anomalia(string id_rep)
+    {
+        SQL = "select num_of_param from rep_reporte where id_rep= "+ id_rep + " \n";
+
+        dt = conexion.ObtieneDataTable(SQL);
+        SQL = "";
+
+        return dt;
+    }
 
 
+    public DataTable ftn_consulta_parametros_reporte_anomalia(string sql)
+    {
+        dt = conexion.ObtieneDataTable(sql);
+        SQL = "";
+        return dt;
+    }
 
 
 }

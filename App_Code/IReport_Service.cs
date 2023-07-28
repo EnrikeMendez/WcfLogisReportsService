@@ -7,137 +7,148 @@ using System.ServiceModel.Web;
 
 public interface IReport_Service
 {
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	 ResponseFormat = WebMessageFormat.Json)]
-	string GetData(int number1, int number2);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+     ResponseFormat = WebMessageFormat.Json)]
+    string GetData(int number1, int number2);
 
-	[OperationContract]
-	CompositeType GetDataUsingDataContract(CompositeType composite);
+    [OperationContract]
+    CompositeType GetDataUsingDataContract(CompositeType composite);
 
-	// TODO: agregue aquí sus operaciones de servicio
+    // TODO: agregue aquí sus operaciones de servicio
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	 ResponseFormat = WebMessageFormat.Json)]
-	string GetMonitoreoRep();
-
-
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetConsultaErrores();
-
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetSql(string sql);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+     ResponseFormat = WebMessageFormat.Json)]
+    string GetMonitoreoRep();
 
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetConsultaCambioPrioridad();
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetConsultaErrores();
+
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetSql(string sql);
 
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetModificaCambioPrioridad(string id_crons, string prioridad);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetConsultaCambioPrioridad();
 
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetModificaCambioPrioridadDinamica();
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetModificaCambioPrioridad(string id_crons, string prioridad);
+
+
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetModificaCambioPrioridadDinamica();
 
 
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetMail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero, string status, string hdnURI);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetMail(string Id_Cron, string NumCli, string id_mail, string nombre, string correo, string Tercero, string status, string hdnURI);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetConsultaReportes(string usuario, string status);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetConsultaReportes(string usuario, string status);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetStatusReporte(string idreporte, string accion);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetStatusReporte(string idreporte, string accion);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetListaCorreos(string lista);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetListaCorreos(string lista);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetArmarContactos(string mail_id);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetArmarContactos(string mail_id);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetArmarCorreos(string mail_list, string id_client);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetArmarCorreos(string mail_list, string id_client);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetValidaCorreos(string mail_list);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetValidaCorreos(string mail_list);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetValidaCorreosOriginales(string mail_list);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetValidaCorreosOriginales(string mail_list);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetEliminaOriginales(string mail_list);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetEliminaOriginales(string mail_list);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetInsertaRegistro(string nameobjeto, string contenareglo);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetInsertaRegistro(string nameobjeto, string contenareglo);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetModificaReporte(string usuario, string idCron);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetModificaReporte(string usuario, string idCron);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetReporte(string usuario, string idreporte);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetReporte(string usuario, string idreporte);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetReferencia(string idfrecuencia);
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetReferencia(string idfrecuencia);
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetNombre_Reporte(string idCron);
-
-
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetConsultaTiposProcesosAduana();
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetNombre_Reporte(string idCron);
 
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetConsultaTiposProcesosTrading();
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetConsultaTiposProcesosAduana();
 
-	[OperationContract]
-	[WebInvoke(Method = "GET",
-	ResponseFormat = WebMessageFormat.Json)]
-	string GetConsultaTiposProcesosAduanaTrading();
+
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetConsultaTiposProcesosTrading();
+
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetConsultaTiposProcesosAduanaTrading();
+
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetConsultaNumeroParametrosReporteAnomalia(string id_rep);
+
+
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    ResponseFormat = WebMessageFormat.Json)]
+    string GetConsultaParametrosReporteAnomalia(string id_rep);
 
 }

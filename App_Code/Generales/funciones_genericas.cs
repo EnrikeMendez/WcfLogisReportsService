@@ -7,13 +7,13 @@ using Newtonsoft.Json;
 
 
 /// <summary>
-/// Descripción breve de funciones_genericas
+/// Funciones genericas portables para otras sistemas
 /// </summary>
 public class funciones_genericas
 {
     System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
     List<Dictionary<string, object>> rows = new List<Dictionary<string, object>>();
-    
+
 
 
     public string ftn_retorna_serializable(DataTable obj_dt)
@@ -41,47 +41,5 @@ public class funciones_genericas
     }
 
 
-    //Funcion que debuelve un catalogo de reglas para la prioridad de los reportes.	
-    public Array CatalogoPrioridadDinamica()
-    {
-        //Al agregar una regla, se debera incrementar la dimencion de filas del arreglo:
-        string[,] ArrayPrioridadDinamica = new string[1, 1];
-
-        //regla de prioridad para pedimentos Instantáneos (173):
-        ArrayPrioridadDinamica[0, 0] = "173"; //id_rep
-        ArrayPrioridadDinamica[1, 0] = "5"; //Prioridad
-
-        //regla de prioridad para regla pedimentos Expediente Aduanal Antolin (311):
-        ArrayPrioridadDinamica[0, 1] = "311"; //id_rep
-        ArrayPrioridadDinamica[1, 1] = "6"; //Prioridad
-
-
-        return ArrayPrioridadDinamica;
-    }
-
-    public List<string> perfil1()
-    {
-        List<string> per1 = new List<string>() {
-            "ALEJANDROLE",
-            "JAVIERD",
-            "ALMALFS"};
-        return per1;
-    }
-
-    public List<string> perfil2()
-    {
-        List<string> per2 = new List<string>() {
-            "YAZMINCC",
-            "EVELINGB",
-            "ELIZABETHBM",
-            "LUISFR",
-            "DULCELO",
-            "ALOURDESC",
-            "ALEXANDRAMM",
-            "LGABRIELAM",
-            "MLOURDESB"
-        };
-        return per2;
-    }
 
 }
